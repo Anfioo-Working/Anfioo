@@ -1,30 +1,73 @@
-<div id="title" align=center>
+# React + TypeScript + Vite
 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+Currently, two official plugins are available:
 
-| ![Modern C++ template][github-sub-title:img][![Anfioo's GitHub stats](https://github-readme-stats.vercel.app/api?username=Anfioo&theme=transparent&show_icons=true&locale=cn)](https://github.com/Anfioo)|[![Anfioo's GitHub languages](https://github-readme-stats.vercel.app/api/top-langs?username=Anfioo&theme=transparent&show_icons=true&locale)](https://github.com/Anfioo) |
-| ---- | ---- |
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
+## React Compiler
 
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
+## Expanding the ESLint configuration
 
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-[![知乎](https://img.shields.io/badge/知乎-Anfioo-yello)](https://www.zhihu.com/people/54-37-39-24)
-[![CSDN](https://img.shields.io/badge/CSDN-Anfioo-yello)](https://blog.csdn.net/m0_73579391)
-[![稀土掘金](https://img.shields.io/badge/稀土掘金-Anfioo-yello)](https://juejin.cn/user/983410267923659)
-[![知乎](https://img.shields.io/badge/CSDN-Anfioo-yello)](https://www.cnblogs.com/Anfioo)
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-<span>![](https://img.shields.io/badge/爱好-编程-red)</span>
-<span>![](https://img.shields.io/badge/性格-开朗-red)</span>
-<span>![](https://img.shields.io/badge/讨厌-学习-yellow)</span>
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-<span>[![WingEnv](https://github-readme-stats.vercel.app/api/pin/?username=Anfioo&repo=WingEnv&locale=cn&theme=transparent&show_icons=true)](https://github.com/Anfioo/WingEnv)</span>
-<span>[![YoloLabelingProgram](https://github-readme-stats.vercel.app/api/pin/?username=Anfioo&repo=YoloLabelingProgram&locale=cn&theme=transparent&show_icons=true)](https://github.com/Anfioo/YoloLabelingProgram)</span>
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-</div>
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-[//]: # (![头像]&#40;image/头像.jpg&#41;)
-
-
-[github-sub-title:img]: https://readme-typing-svg.herokuapp.com?font=Segoe+Script&center=true&lines=Anfioo's+GitHub+Profile
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
